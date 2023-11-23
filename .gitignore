@@ -1,0 +1,18 @@
+# BSP and Bloop files
+.bsp/
+.bloop/
+
+# IntelliJ project files
+.idea
+.idea_modules
+*.iml
+
+# Output files
+out/
+
+# OS X
+.DS_Store
+.localized
+
+# vim
+*.swp
