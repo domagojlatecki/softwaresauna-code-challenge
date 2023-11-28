@@ -1,6 +1,6 @@
 package at.doml.validators
 
-import at.doml.types.{ ErrorMessage, UnparsedInput }
+import at.doml.model.{ ErrorMessage, UnparsedInput }
 import cats.data.Validated
 
 /**
@@ -9,7 +9,7 @@ import cats.data.Validated
   */
 class AllowedCharactersUnparsedInputValidator(allowedCharacters: Set[Char]) extends UnparsedInputValidator {
 
-  def validate(input: UnparsedInput): Validated[ErrorMessage, UnparsedInput] =
+  def validate(input: UnparsedInput): Validated[List[ErrorMessage], UnparsedInput] =
     input.flatten.filterNot(allowedCharacters).distinct.toList match {
       case Nil               => valid(input)
       case invalidCharacters =>

@@ -1,4 +1,4 @@
-package at.doml.types
+package at.doml.model
 
 import scala.collection.immutable.ArraySeq
 

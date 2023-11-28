@@ -1,6 +1,6 @@
 package at.doml.validators
 
-import at.doml.types.{ ErrorMessage, UnparsedInput }
+import at.doml.model.{ ErrorMessage, UnparsedInput }
 import cats.data.Validated
 import cats.data.Validated.{ Invalid, Valid }
 
@@ -13,12 +13,12 @@ trait UnparsedInputValidator {
     * Validates provided unparsed input.
     *
     * @param input unparsed input to validate.
-    * @return If input is valid, `input` parameter value wrapped in [[Valid]] object. Otherwise, error message wrapped
-    *         in [[Invalid]] object.
+    * @return If input is valid, `input` parameter value wrapped in [[Valid]] object. Otherwise, list of error messages
+    *         wrapped in [[Invalid]] object.
     */
-  def validate(input: UnparsedInput): Validated[ErrorMessage, UnparsedInput]
+  def validate(input: UnparsedInput): Validated[List[ErrorMessage], UnparsedInput]
 
   protected def valid(input: UnparsedInput) = Valid(input)
 
-  protected def invalid(errorMessage: String) = Invalid(ErrorMessage(errorMessage))
+  protected def invalid(errorMessage: String) = Invalid(ErrorMessage(errorMessage) :: Nil)
 }

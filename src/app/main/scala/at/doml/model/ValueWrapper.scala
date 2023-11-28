@@ -1,4 +1,4 @@
-package at.doml.types
+package at.doml.model
 
 /**
   *  Template trait for

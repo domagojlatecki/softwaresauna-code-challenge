@@ -1,6 +1,6 @@
 package at.doml.validators
 
-import at.doml.types.{ ErrorMessage, UnparsedInput }
+import at.doml.model.{ ErrorMessage, UnparsedInput }
 import cats.data.Validated.{ Invalid, Valid }
 import cats.effect.IO
 import test.UnitSpec
@@ -58,7 +58,7 @@ class AtLeastOneCharacterUnparsedInputValidatorSpec extends UnitSpec {
           val input = asInput(lines*)
 
           IO.pure(validator.validate(input))
-            .asserting(_ shouldBe Invalid(errorMessage))
+            .asserting(_ shouldBe Invalid(errorMessage :: Nil))
         }
 
         "when input is missing expected character" - {
