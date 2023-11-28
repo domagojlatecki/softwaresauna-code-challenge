@@ -5,12 +5,13 @@ import cats.data.Validated
 
 /**
   * Abstract validator that checks count of the target character.
-  * @param char character to check for.
+  *
+  * @param char character to count.
   */
-abstract class AbstractCharacterCountValidator(char: Char) extends UnparsedInputValidator {
+abstract class AbstractCharacterCountValidator(charToCount: Char) extends UnparsedInputValidator {
 
-  def validate(input: UnparsedInput): Validated[List[ErrorMessage], UnparsedInput] =
-    validateCount(input.flatten.count(_ == char)) match {
+  override def validate(input: UnparsedInput): Validated[List[ErrorMessage], UnparsedInput] =
+    validateCount(input.flatten.count(_ == charToCount)) match {
       case Some(errorMessage) => invalid(errorMessage)
       case None               => valid(input)
     }

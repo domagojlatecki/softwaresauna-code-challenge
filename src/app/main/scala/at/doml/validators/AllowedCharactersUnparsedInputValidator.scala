@@ -5,11 +5,12 @@ import cats.data.Validated
 
 /**
   * Validator that checks if input contains only allowed set of characters.
+  *
   * @param allowedCharacters set of characters that are allowed in the input.
   */
 class AllowedCharactersUnparsedInputValidator(allowedCharacters: Set[Char]) extends UnparsedInputValidator {
 
-  def validate(input: UnparsedInput): Validated[List[ErrorMessage], UnparsedInput] =
+  override def validate(input: UnparsedInput): Validated[List[ErrorMessage], UnparsedInput] =
     input.flatten.filterNot(allowedCharacters).distinct.toList match {
       case Nil               => valid(input)
       case invalidCharacters =>

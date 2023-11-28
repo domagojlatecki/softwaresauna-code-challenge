@@ -2,6 +2,7 @@ package at.doml.model
 
 /**
   * Enumeration which represents possible map nodes along with their character representation.
+  *
   * @param char character which represents this map node.
   */
 enum MapNode(val char: Char) {

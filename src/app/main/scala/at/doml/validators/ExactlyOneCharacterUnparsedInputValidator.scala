@@ -9,7 +9,7 @@ package at.doml.validators
 class ExactlyOneCharacterUnparsedInputValidator(char: Char, charName: String)
     extends AbstractCharacterCountValidator(char) {
 
-  def validateCount(count: Int): Option[String] =
+  protected override def validateCount(count: Int): Option[String] =
     count match {
       case 1 => None
       case 0 => Some(s"Missing $charName character ('$char') in input")
