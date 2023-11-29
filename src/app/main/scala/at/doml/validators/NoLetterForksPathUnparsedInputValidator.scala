@@ -1,6 +1,6 @@
 package at.doml.validators
 
-import at.doml.model.{ErrorMessage, MapNode}
+import at.doml.model.{ ErrorMessage, MapNode }
 
 /**
   * Validator which checks if there are no partial forks in turns which contain a letter. Full crossings are allowed for

@@ -1,28 +1,16 @@
 package at.doml.validators
 
-import at.doml.model.{ ErrorMessage, UnparsedInput }
-import cats.data.Validated.{ Invalid, Valid }
-import cats.effect.IO
-import test.UnitSpec
-import scala.collection.immutable.ArraySeq
+import at.doml.model.ErrorMessage
 
-class AtLeastOneCharacterUnparsedInputValidatorSpec extends UnitSpec {
+class AtLeastOneCharacterUnparsedInputValidatorSpec extends AbstractValidatorUnitSpec {
+
+  override def validator = new AtLeastOneCharacterUnparsedInputValidator('A', "example")
 
   "AtLeastOneCharacterUnparsedInputValidator" - {
-    val validator = new AtLeastOneCharacterUnparsedInputValidator('A', "example")
-
-    def asInput(lines: String*) =
-      UnparsedInput(lines.to(ArraySeq))
 
     fn"validate(UnparsedInput)" - {
 
       "should return Valid(input)" - {
-        def validInput(lines: String*) = {
-          val input = asInput(lines*)
-
-          IO.pure(validator.validate(input))
-            .asserting(_ shouldBe Valid(input))
-        }
 
         "when input contains exactly one expected character" - {
 
@@ -52,22 +40,15 @@ class AtLeastOneCharacterUnparsedInputValidatorSpec extends UnitSpec {
       }
 
       "should return Invalid(errorMessage)" - {
-        val errorMessage = ErrorMessage("Missing example character ('A') in input")
-
-        def invalidInput(lines: String*) = {
-          val input = asInput(lines*)
-
-          IO.pure(validator.validate(input))
-            .asserting(_ shouldBe Invalid(errorMessage :: Nil))
-        }
+        given ErrorMessage = ErrorMessage("Missing example character ('A') in input")
 
         "when input is missing expected character" - {
 
-          "and no other characters" in invalidInput("")
+          "and no other characters" in singleErrorInvalidInput("")
 
-          "and some other characters" in invalidInput("This sentence is missing the required character")
+          "and some other characters" in singleErrorInvalidInput("This sentence is missing the required character")
 
-          "with multiple lines" in invalidInput(
+          "with multiple lines" in singleErrorInvalidInput(
             "Lorem ipsum",
             "dolor sit",
             "amet"

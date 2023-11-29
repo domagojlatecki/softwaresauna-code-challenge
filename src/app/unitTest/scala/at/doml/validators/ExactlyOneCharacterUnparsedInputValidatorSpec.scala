@@ -1,28 +1,16 @@
 package at.doml.validators
 
-import at.doml.model.{ ErrorMessage, UnparsedInput }
-import cats.data.Validated.{ Invalid, Valid }
-import cats.effect.IO
-import test.UnitSpec
-import scala.collection.immutable.ArraySeq
+import at.doml.model.ErrorMessage
 
-class ExactlyOneCharacterUnparsedInputValidatorSpec extends UnitSpec {
+class ExactlyOneCharacterUnparsedInputValidatorSpec extends AbstractValidatorUnitSpec {
+
+  override def validator = new ExactlyOneCharacterUnparsedInputValidator('A', "example")
 
   "ExactlyOneCharacterUnparsedInputValidator" - {
-    val validator = new ExactlyOneCharacterUnparsedInputValidator('A', "example")
-
-    def asInput(lines: String*) =
-      UnparsedInput(lines.to(ArraySeq))
 
     fn"validate(UnparsedInput)" - {
 
       "should return Valid(input)" - {
-        def validInput(lines: String*) = {
-          val input = asInput(lines*)
-
-          IO.pure(validator.validate(input))
-            .asserting(_ shouldBe Valid(input))
-        }
 
         "when input contains exactly one expected character" - {
 
@@ -39,21 +27,15 @@ class ExactlyOneCharacterUnparsedInputValidatorSpec extends UnitSpec {
       }
 
       "should return Invalid(errorMessage)" - {
-        def invalidInput(lines: String*)(using errorMessage: ErrorMessage) = {
-          val input = asInput(lines*)
-
-          IO.pure(validator.validate(input))
-            .asserting(_ shouldBe Invalid(errorMessage :: Nil))
-        }
 
         "when input contains more than one expected character" - {
           given ErrorMessage = ErrorMessage("Only one example character ('A') is expected in input, but 3 were found")
 
-          "and no other characters" in invalidInput("AAA")
+          "and no other characters" in singleErrorInvalidInput("AAA")
 
-          "and some other characters" in invalidInput("AAA Gaming")
+          "and some other characters" in singleErrorInvalidInput("AAA Gaming")
 
-          "with multiple lines" in invalidInput(
+          "with multiple lines" in singleErrorInvalidInput(
             "First line",
             "Second line: AAA",
             "Third Line"
@@ -63,11 +45,11 @@ class ExactlyOneCharacterUnparsedInputValidatorSpec extends UnitSpec {
         "when input is missing expected character" - {
           given ErrorMessage = ErrorMessage("Missing example character ('A') in input")
 
-          "and no other characters" in invalidInput("")
+          "and no other characters" in singleErrorInvalidInput("")
 
-          "and some other characters" in invalidInput("This sentence is missing the required character")
+          "and some other characters" in singleErrorInvalidInput("This sentence is missing the required character")
 
-          "with multiple lines" in invalidInput(
+          "with multiple lines" in singleErrorInvalidInput(
             "Lorem ipsum",
             "dolor sit",
             "amet"

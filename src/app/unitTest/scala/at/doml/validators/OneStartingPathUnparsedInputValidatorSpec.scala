@@ -1,28 +1,14 @@
 package at.doml.validators
 
-import at.doml.model.{ ErrorMessage, UnparsedInput }
-import cats.data.Validated.{ Invalid, Valid }
-import cats.effect.IO
-import test.UnitSpec
-import scala.collection.immutable.ArraySeq
+class OneStartingPathUnparsedInputValidatorSpec extends AbstractValidatorUnitSpec {
 
-class OneStartingPathUnparsedInputValidatorSpec extends UnitSpec {
+  override def validator = new OneStartingPathUnparsedInputValidator
 
   "OneStartingPathUnparsedInputValidator" - {
-    val validator = new OneStartingPathUnparsedInputValidator
-
-    def asInput(lines: String*) =
-      UnparsedInput(lines.to(ArraySeq))
 
     fn"validate(UnparsedInput)" - {
 
       "should return Valid(input)" - {
-        def validInput(lines: String*) = {
-          val input = asInput(lines*)
-
-          IO.pure(validator.validate(input))
-            .asserting(_ shouldBe Valid(input))
-        }
 
         "when input is empty" in validInput("")
 
@@ -126,24 +112,6 @@ class OneStartingPathUnparsedInputValidatorSpec extends UnitSpec {
       }
 
       "should return Invalid(errorMessages)" - {
-        def invalidInput(lines: String*)(errors: ErrorMessage*) = {
-          val input = asInput(lines*)
-
-          IO.pure(validator.validate(input))
-            .asserting(_ shouldBe Invalid(errors.toList))
-        }
-
-        def disconnectedStartError(line: Int, column: Int) =
-          ErrorMessage(s"Starting node has no paths at line: $line, column: $column")
-
-        def disconnectedStart(lines: String*)(line: Int, column: Int) =
-          invalidInput(lines*)(disconnectedStartError(line, column))
-
-        def tooManyStartPathsError(line: Int, column: Int) =
-          ErrorMessage(s"Starting node has more than one path at line: $line, column: $column")
-
-        def tooManyStartPaths(lines: String*)(line: Int, column: Int) =
-          invalidInput(lines*)(tooManyStartPathsError(line, column))
 
         "when input contains only one start character" in disconnectedStart("@")(line = 1, column = 1)
 
@@ -159,7 +127,7 @@ class OneStartingPathUnparsedInputValidatorSpec extends UnitSpec {
           " |"
         )(line = 2, column = 2)
 
-        "when multiple start characters have no connections" in invalidInput(
+        "when multiple start characters have no connections" in multiErrorInvalidInput(
           "@ @",
           " @ ",
           "@ @"
@@ -171,7 +139,7 @@ class OneStartingPathUnparsedInputValidatorSpec extends UnitSpec {
           disconnectedStartError(line = 3, column = 3)
         )
 
-        "when multiple start characters have multiple connections" in invalidInput(
+        "when multiple start characters have multiple connections" in multiErrorInvalidInput(
           "@@@",
           "@@@",
           "@@@"

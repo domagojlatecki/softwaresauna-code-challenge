@@ -1,28 +1,16 @@
 package at.doml.validators
 
-import at.doml.model.{ ErrorMessage, UnparsedInput }
-import cats.data.Validated.{ Invalid, Valid }
-import cats.effect.IO
-import test.UnitSpec
-import scala.collection.immutable.ArraySeq
+import at.doml.model.ErrorMessage
 
-class AllowedCharactersUnparsedInputValidatorSpec extends UnitSpec {
+class AllowedCharactersUnparsedInputValidatorSpec extends AbstractValidatorUnitSpec {
+
+  override def validator = new AllowedCharactersUnparsedInputValidator("ABCD".toSet)
 
   "AllowedCharactersUnparsedInputValidator" - {
-    val validator = new AllowedCharactersUnparsedInputValidator("ABCD".toSet)
-
-    def asInput(lines: String*) =
-      UnparsedInput(lines.to(ArraySeq))
 
     fn"validate(UnparsedInput)" - {
 
       "should return Valid(input)" - {
-        def validInput(lines: String*) = {
-          val input = asInput(lines*)
-
-          IO.pure(validator.validate(input))
-            .asserting(_ shouldBe Valid(input))
-        }
 
         "when input is empty" in validInput("")
 
@@ -39,24 +27,18 @@ class AllowedCharactersUnparsedInputValidatorSpec extends UnitSpec {
       }
 
       "should return Invalid(errorMessage)" - {
-        def invalidInput(lines: String*)(using errorMessage: ErrorMessage) = {
-          val input = asInput(lines*)
-
-          IO.pure(validator.validate(input))
-            .asserting(_ shouldBe Invalid(errorMessage :: Nil))
-        }
 
         "when input contains one unallowed character" - {
           given ErrorMessage = ErrorMessage("Invalid character(s) in input: 'F'")
 
           "and no valid characters" - {
-            "in a single line" in invalidInput("F")
-            "across multiple lines" in invalidInput("F", "FF")
+            "in a single line" in singleErrorInvalidInput("F")
+            "across multiple lines" in singleErrorInvalidInput("F", "FF")
           }
 
           "and some valid characters" - {
-            "in a single line" in invalidInput("FAB")
-            "across multiple lines" in invalidInput("AB", "FAD", "CDF")
+            "in a single line" in singleErrorInvalidInput("FAB")
+            "across multiple lines" in singleErrorInvalidInput("AB", "FAD", "CDF")
           }
         }
 
@@ -64,13 +46,13 @@ class AllowedCharactersUnparsedInputValidatorSpec extends UnitSpec {
           given ErrorMessage = ErrorMessage("Invalid character(s) in input: 'F', 'G', 'H'")
 
           "and no valid characters" - {
-            "in a single line" in invalidInput("FGH")
-            "across multiple lines" in invalidInput("F", "G", "H")
+            "in a single line" in singleErrorInvalidInput("FGH")
+            "across multiple lines" in singleErrorInvalidInput("F", "G", "H")
           }
 
           "and some valid characters" - {
-            "in a single line" in invalidInput("FDAGBHC")
-            "across multiple lines" in invalidInput("FBB", "DDGAACCH")
+            "in a single line" in singleErrorInvalidInput("FDAGBHC")
+            "across multiple lines" in singleErrorInvalidInput("FBB", "DDGAACCH")
           }
         }
       }

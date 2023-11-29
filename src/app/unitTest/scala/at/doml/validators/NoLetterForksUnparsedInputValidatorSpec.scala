@@ -1,28 +1,14 @@
 package at.doml.validators
 
-import at.doml.model.{ErrorMessage, UnparsedInput}
-import cats.data.Validated.{Invalid, Valid}
-import cats.effect.IO
-import test.UnitSpec
-import scala.collection.immutable.ArraySeq
+class NoLetterForksUnparsedInputValidatorSpec extends AbstractValidatorUnitSpec {
 
-class NoLetterForksUnparsedInputValidatorSpec extends UnitSpec {
+  override def validator = new NoLetterForksPathUnparsedInputValidator
 
   "NoLetterForksUnparsedInputValidator" - {
-    val validator = new NoLetterForksPathUnparsedInputValidator
-
-    def asInput(lines: String*) =
-      UnparsedInput(lines.to(ArraySeq))
 
     fn"validate(UnparsedInput)" - {
 
       "should return Valid(input)" - {
-        def validInput(lines: String*) = {
-          val input = asInput(lines*)
-
-          IO.pure(validator.validate(input))
-            .asserting(_ shouldBe Valid(input))
-        }
 
         "when input is empty" in validInput("")
 
@@ -233,18 +219,6 @@ class NoLetterForksUnparsedInputValidatorSpec extends UnitSpec {
       }
 
       "should return Invalid(errorMessages)" - {
-        def invalidInput(lines: String*)(errors: ErrorMessage*) = {
-          val input = asInput(lines*)
-
-          IO.pure(validator.validate(input))
-            .asserting(_ shouldBe Invalid(errors.toList))
-        }
-
-        def forkInPathError(line: Int, column: Int) =
-          ErrorMessage(s"Fork in path at line: $line, column: $column")
-
-        def forkInPath(lines: String*)(line: Int, column: Int) =
-          invalidInput(lines*)(forkInPathError(line, column))
 
         "when input contains a fork in the path" - {
           "left" in forkInPath(
@@ -298,7 +272,7 @@ class NoLetterForksUnparsedInputValidatorSpec extends UnitSpec {
           }
         }
 
-        "when input contains multiple forks in letter paths" in invalidInput(
+        "when input contains multiple forks in letter paths" in multiErrorInvalidInput(
           "AAA",
           "AAA",
           "AAA"

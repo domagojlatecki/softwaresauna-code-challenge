@@ -1,28 +1,14 @@
 package at.doml.validators
 
-import at.doml.model.{ ErrorMessage, UnparsedInput }
-import cats.data.Validated.{ Invalid, Valid }
-import cats.effect.IO
-import test.UnitSpec
-import scala.collection.immutable.ArraySeq
+class ValidTurnsUnparsedInputValidatorSpec extends AbstractValidatorUnitSpec {
 
-class ValidTurnsUnparsedInputValidatorSpec extends UnitSpec {
+  override def validator = new ValidTurnsUnparsedInputValidator
 
   "ValidTurnsUnparsedInputValidator" - {
-    val validator = new ValidTurnsUnparsedInputValidator
-
-    def asInput(lines: String*) =
-      UnparsedInput(lines.to(ArraySeq))
 
     fn"validate(UnparsedInput)" - {
 
       "should return Valid(input)" - {
-        def validInput(lines: String*) = {
-          val input = asInput(lines*)
-
-          IO.pure(validator.validate(input))
-            .asserting(_ shouldBe Valid(input))
-        }
 
         "when input is empty" in validInput("")
 
@@ -125,24 +111,6 @@ class ValidTurnsUnparsedInputValidatorSpec extends UnitSpec {
       }
 
       "should return Invalid(errorMessages)" - {
-        def invalidInput(lines: String*)(errors: ErrorMessage*) = {
-          val input = asInput(lines*)
-
-          IO.pure(validator.validate(input))
-            .asserting(_ shouldBe Invalid(errors.toList))
-        }
-
-        def fakeTurnError(line: Int, column: Int) =
-          ErrorMessage(s"Fake turn at line: $line, column: $column")
-
-        def fakeTurn(lines: String*)(line: Int, column: Int) =
-          invalidInput(lines*)(fakeTurnError(line, column))
-
-        def forkInPathError(line: Int, column: Int) =
-          ErrorMessage(s"Fork in path at line: $line, column: $column")
-
-        def forkInPath(lines: String*)(line: Int, column: Int) =
-          invalidInput(lines*)(forkInPathError(line, column))
 
         "when input contains only one turn character" in fakeTurn("+")(line = 1, column = 1)
 
@@ -336,7 +304,7 @@ class ValidTurnsUnparsedInputValidatorSpec extends UnitSpec {
           }
         }
 
-        "when input contains multiple fake turns and forks in turns" in invalidInput(
+        "when input contains multiple fake turns and forks in turns" in multiErrorInvalidInput(
           "+++  |   |",
           "+++  +  -+-",
           "+++  |   |",
