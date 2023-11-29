@@ -5,8 +5,9 @@ import at.doml.model.{ ErrorMessage, MapNode }
 /**
   * Validator which checks if starting node has only one connected path.
   */
-class OneStartingPathUnparsedInputValidator
-    extends AbstractMultilineConnectionsUnparsedInputValidator(MapNode.Start.char) {
+class OneStartingPathUnparsedInputValidator extends AbstractMultilineConnectionsUnparsedInputValidator {
+
+  protected override def charFilter(char: Char): Boolean = char == MapNode.Start.char
 
   protected override def validateCharacter(
     connectedNeighbours: ConnectedNeighbours,

@@ -5,7 +5,9 @@ import at.doml.model.{ ErrorMessage, MapNode }
 /**
   * Validator which checks if all turns in the input are valid.
   */
-class ValidTurnsUnparsedInputValidator extends AbstractMultilineConnectionsUnparsedInputValidator(MapNode.Turn.char) {
+class ValidTurnsUnparsedInputValidator extends AbstractMultilineConnectionsUnparsedInputValidator {
+
+  protected override def charFilter(char: Char): Boolean = char == MapNode.Turn.char
 
   protected override def validateCharacter(
     connectedNeighbours: ConnectedNeighbours,

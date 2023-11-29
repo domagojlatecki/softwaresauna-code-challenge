@@ -13,4 +13,17 @@ enum MapNode(val char: Char) {
   case VerticalLine    extends MapNode('|')
   case EmptySpace      extends MapNode(' ')
   case Letter(l: Char) extends MapNode(l)
+
+}
+
+object MapNode {
+
+  val NonLetterCharacters: Set[Char] = Set(
+    MapNode.Start,
+    MapNode.End,
+    MapNode.Turn,
+    MapNode.HorizontalLine,
+    MapNode.VerticalLine,
+    MapNode.EmptySpace
+  ).map(_.char)
 }

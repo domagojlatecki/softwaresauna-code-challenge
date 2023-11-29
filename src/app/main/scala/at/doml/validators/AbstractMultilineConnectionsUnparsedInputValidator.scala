@@ -5,10 +5,8 @@ import cats.data.Validated
 
 /**
   * Validator that checks connected neighbour character of the specified character.
-  *
-  * @param charToCheck character to check.
   */
-abstract class AbstractMultilineConnectionsUnparsedInputValidator(charToCheck: Char) extends UnparsedInputValidator {
+abstract class AbstractMultilineConnectionsUnparsedInputValidator extends UnparsedInputValidator {
 
   def validate(input: UnparsedInput): Validated[List[ErrorMessage], UnparsedInput] = {
     // pad input to minimum of three lines (or to two lines for empty input)
@@ -49,7 +47,7 @@ abstract class AbstractMultilineConnectionsUnparsedInputValidator(charToCheck: C
     */
   private def validateLine(previous: String, current: String, next: String, lineNumber: Int): List[ErrorMessage] =
     current.zipWithIndex
-      .filter { case (char, _) => char == charToCheck }
+      .filter { case (char, _) => charFilter(char) }
       .flatMap { case (char, i) =>
         // get neighbours of the current character (or empty space for non-existent neighbours) - disjoint paths will be
         // ignored and treated as empty spaces
@@ -60,6 +58,14 @@ abstract class AbstractMultilineConnectionsUnparsedInputValidator(charToCheck: C
 
         validateCharacter(ConnectedNeighbours(left, right, above, below), lineNumber, columnNumber = i + 1)
       }.toList
+
+  /**
+    * Filter function which specifies which character(s) will be checked by this validator.
+    *
+    * @param char character to filter.
+    * @return `true` if character should be validated, `false` otherwise.
+    */
+  protected def charFilter(char: Char): Boolean
 
   /**
     * Validates a single character in the current line.
