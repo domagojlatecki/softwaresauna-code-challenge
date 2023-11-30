@@ -5,4 +5,4 @@ package at.doml.error
   *
   * @param message error message.
   */
-case class MapWalkingError(message: String) extends AppError(message)
+case class MapWalkingError(message: String) extends AppError(s"Error:\n$message")

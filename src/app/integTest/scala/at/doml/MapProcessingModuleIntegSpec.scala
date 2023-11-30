@@ -1,7 +1,7 @@
 package at.doml
 
-import at.doml.error.{ InputLoadingError, MapWalkingError, ValidationError }
-import at.doml.model.{ ErrorMessage, InputSource, MapNode, MapPosition, ParsedMap }
+import at.doml.error.MapWalkingError
+import at.doml.model.{ MapNode, MapPosition, ParsedMap }
 import cats.effect.IO
 import cats.effect.IO.asyncForIO
 import test.IntegSpec
