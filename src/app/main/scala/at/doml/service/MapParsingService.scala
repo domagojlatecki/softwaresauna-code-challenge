@@ -2,7 +2,6 @@ package at.doml.service
 
 import at.doml.error.ParsingError
 import at.doml.model.{ MapNode, MapPosition, ParsedMap, UnparsedInput }
-import cats.data.Validated
 import cats.effect.Sync
 import cats.implicits.*
 import scala.collection.immutable.ArraySeq

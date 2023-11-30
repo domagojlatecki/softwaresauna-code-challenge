@@ -19,7 +19,7 @@ trait InputLoadingServiceAlgebra[F[_]] {
   /**
     * Loads program input from provided source string.
     *
-    * @param source string which descripes the source of the input.
+    * @param source source of the input.
     * @return Loaded unparsed program input.
     */
   def load(source: InputSource): F[UnparsedInput]
