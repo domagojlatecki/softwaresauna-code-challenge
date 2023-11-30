@@ -155,7 +155,7 @@ class NoLetterForksUnparsedInputValidatorUnitSpec extends AbstractValidatorUnitS
           }
         }
 
-        "when input contains a letter in the streight path" - {
+        "when input contains a letter in the straight path" - {
 
           "left and right" in validInput("-A-")
 

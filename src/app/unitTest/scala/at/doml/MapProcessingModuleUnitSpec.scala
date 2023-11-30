@@ -1,7 +1,7 @@
 package at.doml
 
 import at.doml.error.MapWalkingError
-import at.doml.model.{ MapPosition, ParsedMap, VisitedMapNode }
+import at.doml.model.{ MapPosition, ParsedMap }
 import at.doml.service.{ MapWalkerServiceAlgebra, VisitedNodeListToStringServiceAlgebra }
 import cats.effect.IO
 import test.UnitSpec
@@ -14,16 +14,8 @@ class MapProcessingModuleUnitSpec extends UnitSpec {
     val map      = ParsedMap(ArraySeq.empty, MapPosition(0, 0))
     val maxSteps = 0
 
-    given MapWalkerServiceAlgebra[IO] = new MapWalkerServiceAlgebra[IO] {
-      override def walkOnMap(map: ParsedMap, maxSteps: Int): IO[List[VisitedMapNode]] =
-        IO(Nil)
-    }
-
-    given List[VisitedNodeListToStringServiceAlgebra[IO]] =
-      new VisitedNodeListToStringServiceAlgebra[IO] {
-        override def collectVisitedNodesToString(visitedNodes: List[VisitedMapNode]): IO[String] =
-          IO("")
-      } :: Nil
+    given MapWalkerServiceAlgebra[IO]                     = (_, _) => IO(Nil)
+    given List[VisitedNodeListToStringServiceAlgebra[IO]] = (_ => IO("")) :: Nil
 
     fn"processMap(ParsedMap, Int)" - {
 
@@ -38,11 +30,7 @@ class MapProcessingModuleUnitSpec extends UnitSpec {
 
         "when map walking fails" in {
           val module = {
-            given MapWalkerServiceAlgebra[IO] = new MapWalkerServiceAlgebra[IO] {
-              override def walkOnMap(map: ParsedMap, maxSteps: Int): IO[List[VisitedMapNode]] =
-                IO.raiseError(MapWalkingError(""))
-            }
-
+            given MapWalkerServiceAlgebra[IO] = (_, _) => IO.raiseError(MapWalkingError(""))
             new MapProcessingModule[IO]
           }
 

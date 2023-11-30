@@ -12,7 +12,7 @@ import cats.implicits.*
 trait VisitedNodeListToStringServiceAlgebra[F[_]] {
 
   /**
-    * Conterts list of visited nodes into a string.
+    * Converts list of visited nodes into a string.
     *
     * @param visitedNodes list of visited nodes.
     * @return List of visited nodes transformed into a string.

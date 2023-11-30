@@ -2,18 +2,18 @@ package at.doml
 
 import at.doml.error.AppError
 import at.doml.model.InputSource
-import cats.effect.{ExitCode, IO, IOApp}
+import cats.effect.{ ExitCode, IO, IOApp }
 
 object App extends IOApp {
 
-  case class ProgramArguments(source: InputSource, maxSteps: Int)
+  private case class ProgramArguments(source: InputSource, maxSteps: Int)
 
   override def run(args: List[String]): IO[ExitCode] =
     for {
       parsedArgs <- parseArgs(args)
       exitCode   <- parsedArgs match {
 
-                      case Left(ec)  =>
+                      case Left(ec) =>
                         IO.pure(ec)
 
                       case Right(pa) =>

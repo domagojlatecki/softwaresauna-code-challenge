@@ -6,7 +6,7 @@ import cats.data.Validated
 /**
   * Abstract validator that checks count of the target character.
   *
-  * @param char character to count.
+  * @param charToCount character to count.
   */
 abstract class AbstractCharacterCountValidator(charToCount: Char) extends UnparsedInputValidator {
 

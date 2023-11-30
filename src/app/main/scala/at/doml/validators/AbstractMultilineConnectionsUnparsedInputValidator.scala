@@ -26,7 +26,7 @@ abstract class AbstractMultilineConnectionsUnparsedInputValidator extends Unpars
   }
 
   protected case class ConnectedNeighbours(left: Char, right: Char, above: Char, below: Char) {
-    def count(fn: Char => Boolean) = List(left, right, above, below).count(fn)
+    def count(fn: Char => Boolean): Int = List(left, right, above, below).count(fn)
   }
 
   extension (s: String) {

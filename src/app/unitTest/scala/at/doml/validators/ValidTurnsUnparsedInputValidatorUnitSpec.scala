@@ -178,7 +178,7 @@ class ValidTurnsUnparsedInputValidatorUnitSpec extends AbstractValidatorUnitSpec
           }
         }
 
-        "when input contains streight fake turn" - {
+        "when input contains straight fake turn" - {
 
           "left and right" in fakeTurn("-+-")(line = 1, column = 2)
 

@@ -38,7 +38,7 @@ class AppApiSpec extends ApiSpec {
         "Path as characters: @---A---+|C|+---+|+-B-x"
       )
 
-      "when going straight throught intersectons" in app(
+      "when going straight through intersections" in app(
         s"$testFilesFolderPath/valid/go-straight-through-intersections.txt"
       )(
         ExitCode.Success,

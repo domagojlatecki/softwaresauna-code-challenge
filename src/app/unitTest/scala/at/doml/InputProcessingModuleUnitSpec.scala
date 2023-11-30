@@ -14,20 +14,9 @@ class InputProcessingModuleUnitSpec extends UnitSpec {
     val inputSource = InputSource("")
     val emptyMap    = ParsedMap(ArraySeq.empty, MapPosition(0, 0))
 
-    given InputLoadingServiceAlgebra[IO] = new InputLoadingServiceAlgebra[IO] {
-      override def load(source: InputSource): IO[UnparsedInput] =
-        IO(UnparsedInput(ArraySeq.empty))
-    }
-
-    given ValidationServiceAlgebra[IO] = new ValidationServiceAlgebra[IO] {
-      override def validate(input: UnparsedInput): IO[UnparsedInput] =
-        IO(input)
-    }
-
-    given MapParsingServiceAlgebra[IO] = new MapParsingServiceAlgebra[IO] {
-      override def parse(input: UnparsedInput): IO[ParsedMap] =
-        IO(emptyMap)
-    }
+    given InputLoadingServiceAlgebra[IO] = _ => IO(UnparsedInput(ArraySeq.empty))
+    given ValidationServiceAlgebra[IO]   = input => IO(input)
+    given MapParsingServiceAlgebra[IO]   = _ => IO(emptyMap)
 
     fn"loadMap(InputSource)" - {
 
@@ -42,11 +31,7 @@ class InputProcessingModuleUnitSpec extends UnitSpec {
 
         "when input loading fails" in {
           val module = {
-            given InputLoadingServiceAlgebra[IO] = new InputLoadingServiceAlgebra[IO] {
-              override def load(source: InputSource): IO[UnparsedInput] =
-                IO.raiseError(InputLoadingError("", None))
-            }
-
+            given InputLoadingServiceAlgebra[IO] = _ => IO.raiseError(InputLoadingError("", None))
             new InputProcessingModule[IO]
           }
 
@@ -56,11 +41,7 @@ class InputProcessingModuleUnitSpec extends UnitSpec {
 
         "when validation fails" in {
           val module = {
-            given ValidationServiceAlgebra[IO] = new ValidationServiceAlgebra[IO] {
-              override def validate(input: UnparsedInput): IO[UnparsedInput] =
-                IO.raiseError(ValidationError(Nil))
-            }
-
+            given ValidationServiceAlgebra[IO] = _ => IO.raiseError(ValidationError(Nil))
             new InputProcessingModule[IO]
           }
 
@@ -70,11 +51,7 @@ class InputProcessingModuleUnitSpec extends UnitSpec {
 
         "when parsing fails" in {
           val module = {
-            given MapParsingServiceAlgebra[IO] = new MapParsingServiceAlgebra[IO] {
-              override def parse(input: UnparsedInput): IO[ParsedMap] =
-                IO.raiseError(ParsingError(""))
-            }
-
+            given MapParsingServiceAlgebra[IO] = _ => IO.raiseError(ParsingError(""))
             new InputProcessingModule[IO]
           }
 

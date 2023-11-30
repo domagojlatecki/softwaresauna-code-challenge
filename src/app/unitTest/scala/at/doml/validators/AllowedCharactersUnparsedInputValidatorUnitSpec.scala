@@ -28,7 +28,7 @@ class AllowedCharactersUnparsedInputValidatorUnitSpec extends AbstractValidatorU
 
       "should return Invalid(errorMessage)" - {
 
-        "when input contains one unallowed character" - {
+        "when input contains one non-allowed character" - {
           given ErrorMessage = ErrorMessage("Invalid character(s) in input: 'F'")
 
           "and no valid characters" - {
@@ -42,7 +42,7 @@ class AllowedCharactersUnparsedInputValidatorUnitSpec extends AbstractValidatorU
           }
         }
 
-        "when input contains multiple unallowed characters" - {
+        "when input contains multiple non-allowed characters" - {
           given ErrorMessage = ErrorMessage("Invalid character(s) in input: 'F', 'G', 'H'")
 
           "and no valid characters" - {

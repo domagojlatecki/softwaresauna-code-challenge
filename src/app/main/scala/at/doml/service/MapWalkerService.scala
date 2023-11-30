@@ -137,7 +137,7 @@ class MapWalkerServiceInterpreter[F[_]](using F: Sync[F]) extends MapWalkerServi
   }
 
   /**
-    * Calcuales new direction after taking a turn on the map. The new direction can be relatively left or relatively
+    * Calculates new direction after taking a turn on the map. The new direction can be relatively left or relatively
     * right of the current direction. If no turn direction is valid, current direction is returned.
     *
     * @param map map that is being walked on.
