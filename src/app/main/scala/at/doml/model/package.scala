@@ -22,11 +22,3 @@ object ErrorMessage extends ValueWrapper[String]
   * Opaque type wrapper for validation error messages: [[String]].
   */
 type ErrorMessage = ErrorMessage.Type
-
-/**
-  * Zero-indexed position on the input map.
-  *
-  * @param x map column (counted from left to right).
-  * @param y map row (counted from top to bottom).
-  */
-case class MapPosition(x: Int, y: Int)

@@ -51,7 +51,7 @@ object InputProcessingModule {
     * @return Module which can load and process input from file path.
     */
   def create[F[_] : Sync]: F[InputProcessingModule[F]] =
-    Sync[F].delay {
+    Sync[F].pure {
       val allowedCharacters = MapNode.NonLetterCharacters ++ ('A' to 'Z')
 
       given List[UnparsedInputValidator] = List(

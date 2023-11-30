@@ -17,7 +17,7 @@ import scala.io.Source
 trait InputLoadingServiceAlgebra[F[_]] {
 
   /**
-    * Loads program input from provided source string.
+    * Loads program input from provided source string or raises an error if input cannot be loaded from provided source.
     *
     * @param source source of the input.
     * @return Loaded unparsed program input.
