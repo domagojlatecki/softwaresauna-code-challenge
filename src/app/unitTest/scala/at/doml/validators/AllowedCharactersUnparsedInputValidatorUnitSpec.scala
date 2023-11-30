@@ -2,7 +2,7 @@ package at.doml.validators
 
 import at.doml.model.ErrorMessage
 
-class AllowedCharactersUnparsedInputValidatorSpec extends AbstractValidatorUnitSpec {
+class AllowedCharactersUnparsedInputValidatorUnitSpec extends AbstractValidatorUnitSpec {
 
   override def validator = new AllowedCharactersUnparsedInputValidator("ABCD".toSet)
 

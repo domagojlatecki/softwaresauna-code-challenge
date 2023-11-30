@@ -1,6 +1,6 @@
 package at.doml.validators
 
-class NoLetterForksUnparsedInputValidatorSpec extends AbstractValidatorUnitSpec {
+class NoLetterForksUnparsedInputValidatorUnitSpec extends AbstractValidatorUnitSpec {
 
   override def validator = new NoLetterForksPathUnparsedInputValidator
 

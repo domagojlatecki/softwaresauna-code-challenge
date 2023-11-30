@@ -7,7 +7,7 @@ import cats.effect.IO
 import test.UnitSpec
 import scala.collection.immutable.ArraySeq
 
-class ErrorAccumulatingValidationServiceInterpreterSpec extends UnitSpec {
+class ErrorAccumulatingValidationServiceInterpreterUnitSpec extends UnitSpec {
 
   "ErrorAccumulatingValidationServiceInterpreter" - {
 

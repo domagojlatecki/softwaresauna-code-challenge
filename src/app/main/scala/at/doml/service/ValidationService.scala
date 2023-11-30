@@ -47,7 +47,7 @@ class ErrorAccumulatingValidationServiceInterpreter[F[_]](
 
   override def validate(input: UnparsedInput): F[UnparsedInput] =
     for {
-      validatedInput <- F.delay {
+      validatedInput <- F.pure {
                           // run all validators sequentially and accumulate error messages
                           validators.foldLeft(valid(input)) { case (acc, validator) =>
                             acc.combine(validator.validate(input))

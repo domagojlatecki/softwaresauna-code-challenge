@@ -1,6 +1,6 @@
 package at.doml.validators
 
-class ValidTurnsUnparsedInputValidatorSpec extends AbstractValidatorUnitSpec {
+class ValidTurnsUnparsedInputValidatorUnitSpec extends AbstractValidatorUnitSpec {
 
   override def validator = new ValidTurnsUnparsedInputValidator
 

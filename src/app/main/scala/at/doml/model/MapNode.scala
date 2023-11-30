@@ -13,17 +13,28 @@ enum MapNode(val char: Char) {
   case VerticalLine    extends MapNode('|')
   case EmptySpace      extends MapNode(' ')
   case Letter(l: Char) extends MapNode(l)
-
 }
 
 object MapNode {
 
-  val NonLetterCharacters: Set[Char] = Set(
+  private val NonLetterNodes: Set[MapNode] = Set(
     MapNode.Start,
     MapNode.End,
     MapNode.Turn,
     MapNode.HorizontalLine,
     MapNode.VerticalLine,
     MapNode.EmptySpace
-  ).map(_.char)
+  )
+
+  val NonLetterCharacters: Set[Char] = NonLetterNodes.map(_.char)
+
+  /**
+    * Get enum value of [[MapNode]] for the specified character.
+    *
+    * @param char character for which to get enum value.
+    * @return Value of the [[MapNode]] enum for given character.
+    */
+  def fromChar(char: Char): MapNode =
+    NonLetterNodes.find(_.char == char)
+      .getOrElse(MapNode.Letter(char))
 }
