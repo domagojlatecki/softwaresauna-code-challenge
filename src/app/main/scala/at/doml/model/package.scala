@@ -2,6 +2,13 @@ package at.doml.model
 
 import scala.collection.immutable.ArraySeq
 
+object InputSource extends ValueWrapper[String]
+
+/**
+  * Opaque type wrapper for input source: [[String]].
+  */
+type InputSource = InputSource.Type
+
 object UnparsedInput extends ValueWrapper[ArraySeq[String]]
 
 /**

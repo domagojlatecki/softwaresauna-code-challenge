@@ -1,8 +1,8 @@
 package at.doml.error
 
 /**
-  * Error which indicates that parsing error has occured.
+  * Error which indicates that parsing has failed.
   *
-  * @param msg error message.
+  * @param message error message.
   */
-case class ParsingError(msg: String) extends AppError(msg)
+case class ParsingError(message: String) extends AppError(message)

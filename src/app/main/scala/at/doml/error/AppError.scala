@@ -7,6 +7,6 @@ package at.doml.error
   * @param cause optional cause of this error.
   */
 abstract class AppError(
-  val message: String,
-  val cause:   Option[Throwable] = None
+  message: String,
+  cause:   Option[Throwable] = None
 ) extends Exception(message, cause.orNull)
