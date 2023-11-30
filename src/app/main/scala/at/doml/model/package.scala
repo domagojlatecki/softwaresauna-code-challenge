@@ -22,3 +22,10 @@ object ErrorMessage extends ValueWrapper[String]
   * Opaque type wrapper for validation error messages: [[String]].
   */
 type ErrorMessage = ErrorMessage.Type
+
+object ProgramOutput extends ValueWrapper[String]
+
+/**
+  * Opaque type wrapper for program output: [[String]].
+  */
+type ProgramOutput = ProgramOutput.Type

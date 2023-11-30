@@ -17,7 +17,7 @@ trait VisitedNodeListToStringServiceAlgebra[F[_]] {
     * @param visitedNodes list of visited nodes.
     * @return List of visited nodes transformed into a string.
     */
-  def collectVisitedNodes(visitedNodes: List[VisitedMapNode]): F[String]
+  def collectVisitedNodesToString(visitedNodes: List[VisitedMapNode]): F[String]
 }
 
 /**
@@ -29,7 +29,7 @@ trait VisitedNodeListToStringServiceAlgebra[F[_]] {
 class VisitedNodeListToUniquelyPositionedLettersStringServiceInterpreter[F[_]](using F: Sync[F])
     extends VisitedNodeListToStringServiceAlgebra[F] {
 
-  override def collectVisitedNodes(visitedNodes: List[VisitedMapNode]): F[String] =
+  override def collectVisitedNodesToString(visitedNodes: List[VisitedMapNode]): F[String] =
     for {
       lettersWithPositions      <- F.pure(
                                      visitedNodes.flatMap {
@@ -39,7 +39,7 @@ class VisitedNodeListToUniquelyPositionedLettersStringServiceInterpreter[F[_]](u
                                    )
       uniquelyPositionedLetters <- F.pure(lettersWithPositions.distinct)
       uniqueLetters             <- F.pure(uniquelyPositionedLetters.map(_._1))
-    } yield uniqueLetters.mkString
+    } yield s"Letters: ${uniqueLetters.mkString}"
 }
 
 /**
@@ -51,8 +51,8 @@ class VisitedNodeListToUniquelyPositionedLettersStringServiceInterpreter[F[_]](u
 class VisitedNodesListToWalkedPathStringServiceInterpreter[F[_]](using F: Sync[F])
     extends VisitedNodeListToStringServiceAlgebra[F] {
 
-  override def collectVisitedNodes(visitedNodes: List[VisitedMapNode]): F[String] =
+  override def collectVisitedNodesToString(visitedNodes: List[VisitedMapNode]): F[String] =
     for {
       nodeCharacters <- F.pure(visitedNodes.map(_.node.char))
-    } yield nodeCharacters.mkString
+    } yield s"Path as characters: ${nodeCharacters.mkString}"
 }

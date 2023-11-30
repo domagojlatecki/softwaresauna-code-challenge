@@ -11,10 +11,10 @@ class VisitedNodesListToWalkedPathStringServiceInterpreterUnitSpec extends UnitS
     val service = new VisitedNodesListToWalkedPathStringServiceInterpreter[IO]
 
     def visitedNodes(nodes: (MapNode, Int, Int)*)(expected: String) =
-      service.collectVisitedNodes(nodes.map(n => VisitedMapNode(n._1, MapPosition(n._2, n._3))).toList)
-        .asserting(_ shouldBe expected)
+      service.collectVisitedNodesToString(nodes.map(n => VisitedMapNode(n._1, MapPosition(n._2, n._3))).toList)
+        .asserting(_ shouldBe s"Path as characters: $expected")
 
-    fn"collectVisitedNodes(List[VisitedMapNode])" - {
+    fn"collectVisitedNodesToString(List[VisitedMapNode])" - {
 
       "should correctly create a string of visited path nodes" - {
 
